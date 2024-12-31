@@ -1,0 +1,171 @@
+[
+    {
+      "name": "Fender American Professional II Stratocaster",
+      "brand": "Fender",
+      "type": "Electric",
+      "price": 22000000,
+      "description": "A versatile electric guitar with top-tier craftsmanship and tone.",
+      "imgUrl": "https://tinyurl.com/bd2hyn99"
+    },
+    {
+      "name": "Squier Affinity Series Stratocaster",
+      "brand": "Squier",
+      "type": "Electric",
+      "price": 4500000,
+      "description": "A great entry-level guitar with classic Stratocaster styling.",
+      "imgUrl": "https://tinyurl.com/2cz7pdv5"
+    },
+    {
+      "name": "Taylor 214ce",
+      "brand": "Taylor Guitars",
+      "type": "Acoustic",
+      "price": 12000000,
+      "description": "A grand auditorium acoustic guitar with rich tone and solid construction.",
+      "imgUrl": "https://tinyurl.com/yc677ysw"
+    },
+    {
+      "name": "Ibanez RG550",
+      "brand": "Ibanez",
+      "type": "Electric",
+      "price": 15000000,
+      "description": "A high-performance electric guitar ideal for rock and metal.",
+      "imgUrl": "https://tinyurl.com/yswj6y8w"
+    },
+    {
+      "name": "Gibson Les Paul Standard '50s",
+      "brand": "Gibson",
+      "type": "Electric",
+      "price": 28000000,
+      "description": "A classic electric guitar with a rich, warm tone.",
+      "imgUrl": "https://tinyurl.com/59utmr4u"
+    },
+    {
+      "name": "PRS SE Custom 24",
+      "brand": "PRS Guitars",
+      "type": "Electric",
+      "price": 17500000,
+      "description": "A versatile guitar with a beautiful finish and wide tonal range.",
+      "imgUrl": "https://tinyurl.com/5n7d27mh"
+    },
+    {
+      "name": "Jackson Soloist SLX",
+      "brand": "Jackson",
+      "type": "Electric",
+      "price": 18000000,
+      "description": "A fast-playing, aggressive electric guitar designed for shredders.",
+      "imgUrl": "https://tinyurl.com/bde2fyj4"
+    },
+    {
+      "name": "Rickenbacker 4003",
+      "brand": "Rickenbacker",
+      "type": "Bass",
+      "price": 25000000,
+      "description": "A classic bass guitar known for its distinctive tone and design.",
+      "imgUrl": "https://tinyurl.com/fzfmhftm"
+    },
+    {
+      "name": "Fender Player Jazz Bass",
+      "brand": "Fender",
+      "type": "Bass",
+      "price": 13500000,
+      "description": "A classic bass guitar with a sleek neck and versatile sound.",
+      "imgUrl": "https://tinyurl.com/mryu75kk"
+    },
+    {
+      "name": "Squier Affinity Precision Bass",
+      "brand": "Squier",
+      "type": "Bass",
+      "price": 4500000,
+      "description": "An affordable bass with a punchy, classic sound.",
+      "imgUrl": "https://tinyurl.com/mr2yw7db"
+    },
+    {
+      "name": "Taylor GS Mini-e",
+      "brand": "Taylor Guitars",
+      "type": "Acoustic",
+      "price": 8500000,
+      "description": "A compact, portable acoustic guitar with a rich, full sound.",
+      "imgUrl": "https://tinyurl.com/46k9eck4"
+    },
+    {
+      "name": "Ibanez Artcore AS73",
+      "brand": "Ibanez",
+      "type": "Electric",
+      "price": 10000000,
+      "description": "An affordable semi-hollow electric guitar with a warm tone.",
+      "imgUrl": "https://tinyurl.com/4xux7ysy"
+    },
+    {
+      "name": "Gibson SG Standard '61",
+      "brand": "Gibson",
+      "type": "Electric",
+      "price": 25000000,
+      "description": "A slim, lightweight guitar with a rich, bright tone.",
+      "imgUrl": "https://tinyurl.com/2p9p5xna"
+    },
+    {
+      "name": "PRS SE Standard 24",
+      "brand": "PRS Guitars",
+      "type": "Electric",
+      "price": 14500000,
+      "description": "A straightforward electric guitar with smooth playability and quality construction.",
+      "imgUrl": "https://tinyurl.com/2f3f8ynz"
+    },
+    {
+      "name": "Jackson JS Series Dinky JS22",
+      "brand": "Jackson",
+      "type": "Electric",
+      "price": 5500000,
+      "description": "An affordable guitar designed for high-speed playing and shredding.",
+      "imgUrl": "https://tinyurl.com/yzm2bxxx"
+    },
+    {
+      "name": "Rickenbacker 330",
+      "brand": "Rickenbacker",
+      "type": "Electric",
+      "price": 27000000,
+      "description": "An iconic electric guitar with bright, jangly tones and classic styling.",
+      "imgUrl": "https://tinyurl.com/ehr8frr2"
+    },
+    {
+      "name": "Fender American Ultra Stratocaster",
+      "brand": "Fender",
+      "type": "Electric",
+      "price": 38000000,
+      "description": "A premium Stratocaster with advanced features and tonal flexibility.",
+      "imgUrl": "https://tinyurl.com/3ddwk4yn"
+    },
+    {
+      "name": "Squier Classic Vibe '60s Stratocaster",
+      "brand": "Squier",
+      "type": "Electric",
+      "price": 6500000,
+      "description": "A vintage-inspired Stratocaster with a bright, clean tone.",
+      "imgUrl": "https://tinyurl.com/4wxdv4d5"
+    },
+    {
+      "name": "Taylor 314ce",
+      "brand": "Taylor Guitars",
+      "type": "Acoustic",
+      "price": 15000000,
+      "description": "A mid-range acoustic guitar with great balance and projection.",
+      "imgUrl": "https://tinyurl.com/34w3rbx4"
+    },
+    {
+      "name": "Ibanez JEM77P-BFP Steve Vai",
+      "brand": "Ibanez",
+      "type": "Electric",
+      "price": 28000000,
+      "description": "A signature electric guitar designed with Steve Vai for extreme shredding.",
+      "imgUrl": "https://tinyurl.com/5yfnxwr8"
+    },
+    {
+      "name": "Gibson Firebird",
+      "brand": "Gibson",
+      "type": "Electric",
+      "price": 32000000,
+      "description": "A distinctive guitar with sharp tones and a unique body shape.",
+      "imgUrl": "https://tinyurl.com/3vj2yfpj"
+    }
+  ]
+  
