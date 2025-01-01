@@ -1,14 +1,14 @@
+const errorHandler = require("./middlewares/errorhandler");
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const router = require("./routers/index");
 
-
-const errorHandler = require('./middlewares/errorhandler')
-const express = require('express')
-const app = express()
-const router = require('./routers/index')
+app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(router)
-app.use(errorHandler)
+app.use(router);
+app.use(errorHandler);
 
-
-module.exports = app
+module.exports = app;

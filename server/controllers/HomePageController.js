@@ -1,4 +1,4 @@
-const { Product } = require("../models");
+const { Product} = require("../models");
 
 class HomePageController {
   static async homepage(req, res, next) {
