@@ -1,3 +1,4 @@
+const errorHandler = require('./middlewares/errorhandler')
 const express = require('express')
 const app = express()
 

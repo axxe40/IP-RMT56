@@ -1,5 +1,8 @@
 'use strict';
 
+const { use } = require("../app");
+const {hashPassword} = require("../helpers/hashPassword")
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -12,6 +15,17 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    
+    const users = require("../data/user.json").map((e) => {
+      delete e.id
+      return {
+        ...e,
+        password: hashPassword(e.password),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    })
+    await queryInterface.bulkInsert("Users", users)
   },
 
   async down (queryInterface, Sequelize) {
@@ -21,5 +35,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete("Users", null, {})
   }
 };

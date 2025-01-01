@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const {hashPassword} = require("../helpers/hashPassword")
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,18 +10,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Recommendation, { foreignKey: "userId" });
+      User.hasMany(models.Cart, {foreignKey: "userId"})
     }
   }
-  User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    price_range: DataTypes.JSON,
-    brand: DataTypes.STRING,
-    type: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  User.init(
+    {
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      price_range: DataTypes.JSON,
+      brand: DataTypes.STRING,
+      type: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "User",
+      hooks: {
+        beforeCreate(user) {
+          user.password = hashPassword(user.password); 
+        },
+        beforeUpdate: (user) => {
+          if (user.password) {
+            user.password = hashPassword(user.password); 
+          }
+        },
+      },
+    }
+  );
   return User;
 };

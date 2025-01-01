@@ -10,7 +10,7 @@
     {
       "name": "jen",
       "email": "jen@mail.com",
-      "password": "", 
+      "password": "12345", 
       "price_range": null,
       "brand": null,
       "type": null
