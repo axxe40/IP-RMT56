@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Recommendation.init({
-    user_id: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Recommendation',
