@@ -1,7 +1,7 @@
 [
     {
       "name": "jon",
-      "email": "john@mail.com",
+      "email": "jon@mail.com",
       "password": "12345", 
       "price_range": null,
       "brand": null,
