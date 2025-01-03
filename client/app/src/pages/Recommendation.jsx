@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import Navbar from "../components/Navbar";
 
 export default function Recommendation() {
@@ -84,9 +85,9 @@ export default function Recommendation() {
         </div>
         {/* Back Button */}
         <div className="flex justify-start ml-6 mt-8">
-          <button className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600">
+          <NavLink to="/" className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600">
             Back to Home
-          </button>
+          </NavLink>
         </div>
       </div>
     </>

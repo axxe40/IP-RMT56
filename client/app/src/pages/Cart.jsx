@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import Navbar from "../components/Navbar";
 
 export default function Cart() {
@@ -25,11 +26,11 @@ export default function Cart() {
               <p className="text-sm  text-gray-600">Electric</p>
               <p className="text-lg font-semibold text-gray-800">Rp22.000.000</p>
               <div className="flex items-center justify-between mt-4 ">
-                <button className="bg-red-200 text-red-600 py-2 px-6 rounded-md hover:bg-red-300 focus:outline-none">
+                <button className="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 focus:outline-none">
                   -
                 </button>
                 <span className="text-lg font-semibold">1</span>
-                <button className="bg-green-500  text-black py-2 px-6 rounded-md hover:bg-green-400 focus:outline-none">
+                <button className="bg-green-500  text-black py-2 px-6 rounded-md hover:bg-green-600 focus:outline-none">
                   +
                 </button>
               </div>
@@ -40,9 +41,9 @@ export default function Cart() {
           </div>
         </div>
         <div className="flex justify-start ml-6 mt-4">
-          <button className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600">
+          <NavLink to="/" className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600">
             Back to Home
-          </button>
+          </NavLink>
         </div>
       </div>
       {/* Repeat for more products */}

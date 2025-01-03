@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 export default function Navbar({ isCartPage, isRecommendationPage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,9 +25,9 @@ export default function Navbar({ isCartPage, isRecommendationPage }) {
         {/* Left Section */}
         <div className="flex items-center gap-8">
           <h1 className="text-xl font-bold text-gray-800">Your Guitar</h1>
-          <button className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
+          <NavLink to="/recommend" className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
             Recommendation with AI
-          </button>
+          </NavLink>
         </div>
       </nav>
     );
@@ -39,9 +39,9 @@ export default function Navbar({ isCartPage, isRecommendationPage }) {
         {/* Left Section */}
         <div className="flex items-center gap-8">
           <h1 className="text-xl font-bold text-gray-800">Your Guitar</h1>
-          <button className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
+          <NavLink to="/cart" className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
             Cart
-          </button>
+          </NavLink>
         </div>
       </nav>
     );
@@ -53,12 +53,12 @@ export default function Navbar({ isCartPage, isRecommendationPage }) {
         {/* Left Section */}
         <div className="flex items-center gap-8">
           <h1 className="text-xl font-bold text-gray-800">Your Guitar</h1>
-          <button className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
+          <NavLink to="/cart" className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
             Cart
-          </button>
-          <button className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
+          </NavLink>
+          <NavLink to="/recommend" className="text-gray-800 font-medium text-xl hover:bg-orange-300 rounded py-1 px-2">
             Recommendation with AI
-          </button>
+          </NavLink>
         </div>
         {/* Right Section */}
         <div className="flex items-center gap-10">
