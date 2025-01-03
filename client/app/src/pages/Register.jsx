@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import iconGuitar from "../assets/icon guitar.png"
 
 export default function Register() {
@@ -17,7 +18,7 @@ export default function Register() {
   </div>
   {/* Right Section (Form) */}
   <div className="flex items-center justify-center w-full lg:w-1/2 bg-slate-50">
-  <div className="max-w-md w-full px-8 py-10 bg-orange-200 shadow-lg rounded-md">
+  <div className="max-w-md w-full px-8 py-8 bg-orange-200 shadow-lg rounded-md">
     <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
       Your Guitar
     </h2>
@@ -69,7 +70,7 @@ export default function Register() {
 
       {/* Register Button */}
       <button
-        type="submit"
+      type="submit"
         className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 mb-4"
       >
         Register
@@ -79,9 +80,9 @@ export default function Register() {
     {/* Login Link */}
     <p className="mt-4 text-center text-sm text-gray-600">
       Already have an account?
-      <a href="#" className="text-blue-500 hover:underline">
+      <NavLink to="/login" className="text-blue-500 hover:underline ml-1">
         Login
-      </a>
+      </NavLink>
     </p>
   </div>
 </div>

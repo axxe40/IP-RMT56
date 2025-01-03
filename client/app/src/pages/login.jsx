@@ -1,8 +1,14 @@
 import iconGuitar from "../assets/icon guitar.png"
 import iconGoogle from "../assets/icon google.png"
 import iconGithub from "../assets/icon github.png"
+import { NavLink, useNavigate } from "react-router";
 
 export default function Login() {
+  const navigate = useNavigate()
+
+  const handleLogin = () => {
+    navigate("/"); // Arahkan ke halaman beranda ("/")
+  };
   return (
     <>
       <div className="flex min-h-screen">
@@ -54,7 +60,7 @@ export default function Login() {
               </div>
               {/* Login Button */}
               <button
-                type="submit"
+                onClick={handleLogin}
                 className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 mb-4"
               >
                 Login
@@ -88,9 +94,9 @@ export default function Login() {
             {/* Register Link */}
             <p className="mt-4 text-center text-sm text-gray-600">
               Don't you have an account yet?
-              <a href="#" className="text-blue-500 hover:underline">
+              <NavLink to="/register" className="text-blue-500 hover:underline ml-1">
                 Register
-              </a>
+              </NavLink>
             </p>
           </div>
         </div>
