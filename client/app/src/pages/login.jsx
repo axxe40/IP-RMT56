@@ -64,6 +64,34 @@ export default function Login() {
     });
   }, []);
 
+  const handleGitHubLogin = () => {
+    // Redirect to GitHub OAuth URL
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_GITHUB_CLIENT_ID}&scope=user:email`;
+  };
+
+  useEffect(() => {
+    // Handle the OAuth response after GitHub redirect
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    console.log("Authorization code from GitHub: ", code);
+    if (code) {
+      const getGitHubToken = async () => {
+        try {
+          const { data } = await p2Api.post("/githubLogin", { code });
+          toast.success("login successful");
+          localStorage.setItem("access_token", data.access_token);
+          setTimeout(() => {
+            navigate("/");
+          }, 400);
+        } catch (error) {
+          console.log("GitHub login error:", error);
+          toast.error(error.response.data.message);
+        }
+      };
+      getGitHubToken();
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -122,7 +150,7 @@ export default function Login() {
               </button>
             </form>
             {/* Divider */}
-            <div className="flex items-center my-4">
+            <div className="flex items-center my-3">
               <hr className="flex-grow border-gray-300" />
               <span className="px-3 text-sm text-gray-500">Or login with</span>
               <hr className="flex-grow border-gray-300" />
@@ -131,16 +159,13 @@ export default function Login() {
             <div className="flex flex-col space-y-2">
               <div
                 id="buttonDiv"
-                className="flex items-center justify-center w-full py-2 px-4  cursor-pointer"
+                className="flex items-center justify-center w-auto py-1.5"
               >
-                <img
-                  src={iconGoogle}
-                  alt="Google Icon"
-                  className="w-5 h-5 mr-3"
-                />
-                <span className="text-gray-700">Login with Google</span>
+               
               </div>
-              <button className="flex items-center justify-center w-full py-2 px-4 bg-black text-white border border-black rounded-md shadow-sm hover:bg-gray-900">
+              <button
+                onClick={handleGitHubLogin}
+                className="flex items-center justify-center w-full py-2 px-4 bg-black text-white border border-black rounded-md shadow-sm hover:bg-gray-900">
                 <img
                   src={iconGithub}
                   alt="GitHub Icon"
