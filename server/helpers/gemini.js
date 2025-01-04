@@ -9,12 +9,12 @@ async function getRecommendation(preferences, products) {
 
     // Buat prompt untuk AI
     const prompt = `
-   User Preferences:
-    Brand: "${preferences.brand}",
-    Type: "${preferences.type}",
-    Price Range: ${preferences.price_range.min_price} - ${preferences.price_range.max_price}
-    Please find the products that match the user preferences above. If no products match the brand, type and price range, return a message: "Data not found."
-    
+   Data:
+   Filter the products list strictly based on this data:
+    1. The "brand" of the product must match "${preferences.brand}"
+    2. The "type" of the product must match "${preferences.type}"
+    3. The "price" of the product must fall within the range ${preferences.price_range.min_price} - ${preferences.price_range.max_price}.
+        
     Products:
      ${products
        .map(
@@ -31,15 +31,36 @@ async function getRecommendation(preferences, products) {
        )
        .join(",")}
 
-    Based on the User Preferences, provide a recommendation list in JSON format.
+    
+    Based on the data, provide a recommendation list using this JSON schema:
+    
+    Response the return data. If Products not matched with one of point the data give {"message": "Product not found"} 
+    
+    Product = 
+    {
+        "id": integer,
+        "imgUrl": string,
+        "name": string,
+        "brand": string,
+        "type": string,
+        "price": integer,
+        "description": string,
+      }
+      
+  
+    
+    Return: Array<Product>
     `;
       
-    console.log("isi prompt", prompt);
+    // console.log("isi prompt", prompt);
 
     // Generate content dari Gemini AI
-      const result = await model.generateContent(prompt);
-      console.log("AI Response: ", result.response.text());
-    return result.response.text();
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text().replace(/\`\`\`json|\`\`\`/gi,'')
+    // console.log(responseText, "<<<");
+    const recommend = JSON.parse(responseText)
+    console.log(recommend);
+    return recommend;
   } catch (error) {
     console.error("Error generating AI response:", error);
     throw new Error("Failed to generate AI response");

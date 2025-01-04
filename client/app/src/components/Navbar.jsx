@@ -16,7 +16,12 @@ export default function Navbar({ isCartPage, isRecommendationPage }) {
     };
     
     const handleLogout = () => {
-      navigate("/login"); // Arahkan ke halaman beranda ("/")
+      try {
+        localStorage.removeItem("access_token");
+        navigate("/login");
+      } catch (error) {
+        console.log("handleLogin error:", error);
+      }
     };
 
   if (isCartPage) {

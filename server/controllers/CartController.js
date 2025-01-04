@@ -57,7 +57,7 @@ class CartController {
       const cartItem = await Cart.findByPk(id); 
 
       if (!cartItem) {
-        next({ name: "NotFound", message: "Quantity must be at least 1." });
+        next({ name: "NotFound", message: "" });
         return;
       }
 

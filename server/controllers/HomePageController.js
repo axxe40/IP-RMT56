@@ -29,15 +29,15 @@ class HomePageController {
       });
       // console.log("isi product:", products);
   
-      if (!products.length) {
+      if (!products) {
         next({ name: "NotFound", message: "No matching products found" });
         return;
       }
   
       // Menggunakan helper getRecommendation yang sudah diimpor
-      const recommendations = await getRecommendation({ brand, type, price_range }, products);
+      const response = await getRecommendation({ brand, type, price_range }, products);
   
-      res.status(200).json({ recommendations });
+      res.status(200).json(response );
     } catch (error) {
       console.log("ada apa", error);
       next(error);

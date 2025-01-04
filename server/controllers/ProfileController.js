@@ -22,20 +22,13 @@ class ProfileController {
   static async updatePreference(req, res, next) {
     try {
       const { brand, type, price_range } = req.body;
-      const formPriceRange =
-        price_range && price_range.min_price && price_range.max_price;
 
-      if (price_range && !formPriceRange) {
-        return next({
-          name: "BadRequest",
-          message: "Invalid price_range format",
-        });
-      }
-
-      const updatedData = {};
-      if (brand) updatedData.brand = brand;
-      if (type) updatedData.type = type;
-      if (price_range) updatedData.price_range = price_range;
+      const updatedData = {
+        brand: brand === "" ? "" : brand,
+        type: type === "" ? "" : type,
+        price_range: price_range === "" ? null : price_range,
+      };
+      
 
       const user = await User.findByPk(req.user.id);
       if (!user) {
