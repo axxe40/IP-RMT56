@@ -1,5 +1,6 @@
 const { Product} = require("../models");
 const {getRecommendation} = require("../helpers/gemini");
+const { Op } = require("sequelize");
 
 class HomePageController {
   static async homepage(req, res, next) {
@@ -12,8 +13,15 @@ class HomePageController {
 
   static async showAllGuitars(req, res, next) {
     try {
-      const shoes = await Product.findAll();
-      return res.status(200).json(shoes);
+      const { q, brand, type } = req.query;
+
+      const where = {};
+      if (q) where.name = { [Op.iLike]: `%${q}%` }; 
+      if (brand) where.brand = { [Op.iLike]: `%${brand}%` }; 
+      if (type) where.type = { [Op.iLike]: `%${type}%` }; 
+
+      const guitars = await Product.findAll({ where });
+      return res.status(200).json(guitars);
     } catch (error) {
       next(error);
     }
@@ -29,15 +37,14 @@ class HomePageController {
       });
       // console.log("isi product:", products);
   
-      if (!products.length) {
+      if (!products) {
         next({ name: "NotFound", message: "No matching products found" });
         return;
       }
   
-      // Menggunakan helper getRecommendation yang sudah diimpor
-      const recommendations = await getRecommendation({ brand, type, price_range }, products);
+      const response = await getRecommendation({ brand, type, price_range }, products);
   
-      res.status(200).json({ recommendations });
+      res.status(200).json(response);
     } catch (error) {
       console.log("ada apa", error);
       next(error);

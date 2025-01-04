@@ -1,14 +1,69 @@
-import iconGuitar from "../assets/icon guitar.png"
-import iconGoogle from "../assets/icon google.png"
-import iconGithub from "../assets/icon github.png"
+import iconGuitar from "../assets/icon guitar.png";
+import iconGoogle from "../assets/icon google.png";
+import iconGithub from "../assets/icon github.png";
 import { NavLink, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { p2Api } from "../helpers/http-client";
+
 
 export default function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    navigate("/"); // Arahkan ke halaman beranda ("/")
+  const [email, setEmail] = useState("jon@mail.com");
+  const [password, setPassword] = useState("12345");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const {data} = await p2Api.post("/login", { email, password });
+      // console.log("ini response:",data);
+      toast.success("login successful");
+
+      localStorage.setItem("access_token", data.access_token)
+
+      setTimeout(() => {
+        navigate("/");
+      }, 400);
+    } catch (error) {
+      console.log("handleLogin error:", error);
+      const errorMessage = error.response.data.message
+      // console.log(errorMessage);
+      toast.error(errorMessage);
+    }
   };
+
+  async function handleCredentialResponse(response) {
+  try {
+    // console.log("Encoded JWT ID token: " + response.credential);
+    const { data } = await p2Api.post("/googleLogin", { googleToken: response.credential});
+    toast.success("login successful");
+  
+    localStorage.setItem("access_token", data.access_token)
+  
+    setTimeout(() => {
+      navigate("/");
+    }, 400);
+  } catch (error) {
+    console.log("handleLogin error:", error.response.data);
+    const errorMessage = error.response.data.message
+    // console.log(errorMessage);
+    toast.error(errorMessage);
+  }
+ 
+  }
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("buttonDiv"), {
+      theme: "outline",
+      size: "large",
+    });
+  }, []);
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -17,11 +72,7 @@ export default function Login() {
           <h2 className="absolute top-12  text-center text-4xl font-bold text-black">
             Your Guitar
           </h2>
-          <img
-            src={iconGuitar}
-            alt="Guitar Illustration"
-            className="mr-16 "
-          />
+          <img src={iconGuitar} alt="Guitar Illustration" className="mr-16 " />
         </div>
         {/* Right Section (Form) */}
         <div className="flex items-center justify-center w-full lg:w-1/2 bg-slate-50">
@@ -29,7 +80,7 @@ export default function Login() {
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
               Your Guitar
             </h2>
-            <form>
+            <form onSubmit={handleLogin}>
               {/* Email Input */}
               <div className="mb-4">
                 <label
@@ -42,6 +93,8 @@ export default function Login() {
                   type="email"
                   id="email"
                   className="mt-1 block w-full py-2 pl-3 rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500  focus:outline-none"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               {/* Password Input */}
@@ -56,11 +109,13 @@ export default function Login() {
                   type="password"
                   id="password"
                   className="mt-1 block w-full py-2 pl-3 rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500  focus:outline-none"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               {/* Login Button */}
               <button
-                onClick={handleLogin}
+                type="submit"
                 className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 mb-4"
               >
                 Login
@@ -74,14 +129,17 @@ export default function Login() {
             </div>
             {/* Social Login Buttons */}
             <div className="flex flex-col space-y-2">
-              <button className="flex items-center justify-center w-full py-2 px-4 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+              <div
+                id="buttonDiv"
+                className="flex items-center justify-center w-full py-2 px-4  cursor-pointer"
+              >
                 <img
                   src={iconGoogle}
                   alt="Google Icon"
                   className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700">Login with Google</span>
-              </button>
+              </div>
               <button className="flex items-center justify-center w-full py-2 px-4 bg-black text-white border border-black rounded-md shadow-sm hover:bg-gray-900">
                 <img
                   src={iconGithub}
@@ -94,7 +152,10 @@ export default function Login() {
             {/* Register Link */}
             <p className="mt-4 text-center text-sm text-gray-600">
               Don't you have an account yet?
-              <NavLink to="/register" className="text-blue-500 hover:underline ml-1">
+              <NavLink
+                to="/register"
+                className="text-blue-500 hover:underline ml-1"
+              >
                 Register
               </NavLink>
             </p>
