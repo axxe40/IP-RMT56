@@ -1,9 +1,8 @@
-import iconGuitar from "../assets/icon guitar.png";
-import iconGoogle from "../assets/icon google.png";
-import iconGithub from "../assets/icon github.png";
-import { NavLink, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import iconGithub from "../assets/icon github.png";
+import iconGuitar from "../assets/icon guitar.png";
 import { p2Api } from "../helpers/http-client";
 
 
