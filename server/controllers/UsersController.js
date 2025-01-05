@@ -3,6 +3,7 @@ const { comparePassword } = require("../helpers/hashPassword");
 const { signToken } = require("../helpers/jwt");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client();
+const axios = require('axios');
 
 class UsersController {
   static async googleLogin(req, res, next) {
@@ -30,6 +31,70 @@ class UsersController {
       next(error);
     }
   }
+
+  static async githubLogin(req, res, next) {
+    try {
+      const { code } = req.body;
+
+      const tokenResponse = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        null,
+        {
+          params: {
+            client_id: process.env.GITHUB_CLIENT_ID,
+            client_secret: process.env.GITHUB_CLIENT_SECRET,
+            code,
+          },
+          headers: { accept: 'application/json' },
+        }
+      );
+  
+      const { access_token: githubAccessToken } = tokenResponse.data;
+  
+      if (!githubAccessToken) {
+        return res.status(400).json({ message: "GitHub login failed" });
+      }
+  
+      // Get user information
+      const userInfoResponse = await axios.get('https://api.github.com/user', {
+        headers: {
+          Authorization: `Bearer ${githubAccessToken}`,
+        },
+      });
+  
+      const { name } = userInfoResponse.data;
+  
+      // Get user's primary email
+      const userEmailsResponse = await axios.get('https://api.github.com/user/emails', {
+        headers: {
+          Authorization: `Bearer ${githubAccessToken}`,
+        },
+      });
+  
+      const primaryEmail = userEmailsResponse.data.find(email => email.primary && email.verified)?.email;
+  
+      if (!primaryEmail) {
+        return res.status(400).json({ message: "Unable to retrieve verified email" });
+      }
+  
+      let user = await User.findOne({ where: { email: primaryEmail } });
+      if (!user) {
+        user = await User.create({
+          name,
+          email: primaryEmail,
+          password: Math.random().toString(),
+        });
+      }
+  
+      const access_token = signToken({ id: user.id });
+  
+      res.status(200).json({ message: "Login success", access_token });
+    } catch (error) {
+      console.error("GitHub Login Error:", error);
+      next(error);
+    }
+  }
+
 
   static async register(req, res, next) {
     try {
