@@ -12,7 +12,7 @@ class CartController {
         quantity: 1,
       });
 
-      return res.status(200).json({ message: "Product added to cart" });
+      return res.status(200).json({ message: `Product with Id ${productId} added to cart` });
     } catch (error) {
       console.log(error);
       next(error);
