@@ -57,7 +57,7 @@ class CartController {
       const cartItem = await Cart.findByPk(id); 
 
       if (!cartItem) {
-        next({ name: "NotFound", message: "" });
+        next({ name: "NotFound", message: "Product not found" });
         return;
       }
 
@@ -89,7 +89,7 @@ class CartController {
         return next({ name: "NotFound", message: "Product not found" });
       }
 
-      return res.status(200).json({ message: "Product removed from cart" });
+      return res.status(200).json({ message: `Product Id: ${id} removed from cart` });
     } catch (error) {
       next(error);
     }

@@ -11,6 +11,7 @@ export default function Homepage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [brandFilter, setBrandFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [cartItems, setCartItems] = useState([]);
   const accessToken = localStorage.getItem("access_token");
 
 
@@ -29,20 +30,37 @@ export default function Homepage() {
       });
       setProducts(response.data); 
     } catch (error) {
-      console.error("Error fetching products", error);
-    } finally {
-      setLoading(false); 
+      console.error("Error fetching products:", error);
+    }
+    setLoading(false); // Menghentikan loading spinner setelah selesai
+  };
+  
+  useEffect(() => {
+    fetchProducts();
+  }, [searchQuery, brandFilter, typeFilter]); 
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await p2Api.get("/cart", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log("tes isi:",response.data);
+      setCartItems(response.data); // Menyimpan cart items
+    } catch (error) {
+      console.error("Error fetching cart items", error);
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [searchQuery, brandFilter, typeFilter]); 
+    fetchCartItems(); // Fetch cart items saat halaman di-render
+  }, [searchQuery, brandFilter, typeFilter]); // Dependensi yang ada
 
   const handleAddToCart = async (productId) => {
     setLoading(true);
     try {
-      // Kirim permintaan POST ke endpoint /cart dengan productId
       const response = await p2Api.post('/cart', 
         { productId }, 
         {
@@ -52,14 +70,26 @@ export default function Homepage() {
         }
       );
       console.log(response.data);
-        toast.success(response.data.message || 'Product added to cart successfully!');
+      await fetchCartItems(); // Refresh seluruh data keranjang
+      toast.success(response.data.message);
     } catch (error) {
-      console.error("Error adding product to cart", error);
-      toast.error('Failed to add product to cart');
-    } finally {
-      setLoading(false); // Menghentikan loading spinner
+      console.error("Error adding product to cart:", error);
+    }
+    setLoading(false);
+  };
+ 
+  const isProductInCart = (productId) => {
+    try {
+      return cartItems.some((item) => {
+        // console.log("Item in cart:", item); 
+        return item.productId === productId;
+      });
+    } catch (error) {
+      console.error("cartItems is not iterable or invalid:", error);
+      return false;
     }
   };
+  
 
   return (
     <>
@@ -135,15 +165,20 @@ export default function Homepage() {
               className="w-full h-52 object-fill rounded-md"
             />
             <div className="px-4 py-3 flex flex-col flex-grow">
-              <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
+              <h2 className="text-lg font-semibold text-gray-800 h-8 overflow-y-auto">{product.name}</h2>
               <p className="text-sm font-semibold text-gray-600">{product.brand}</p>
               <p className="text-sm text-gray-600">{product.type}</p>
               <p className="text-lg font-bold text-gray-800">{formatterRp.format(product.price)}</p>
-              <p className="text-sm text-gray-600">{product.description}</p>
+              <p className="text-sm text-gray-600  ">{product.description}</p>
             </div>
             <button
-              onClick={() => handleAddToCart(product.id)}
-              className="w-full bg-sky-700 text-white mt-auto py-2 rounded-md hover:bg-sky-600">
+                onClick={() => handleAddToCart(product.id)}
+                disabled={isProductInCart(product.id)} 
+                className={`w-full mt-auto py-2 rounded-md ${
+                  isProductInCart(product.id)
+                    ? "bg-sky-300 text-white"
+                    : "bg-sky-700 text-white hover:bg-sky-600"
+                }`}>
               Add to Cart
             </button>
           </div>
