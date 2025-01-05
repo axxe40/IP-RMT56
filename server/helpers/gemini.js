@@ -59,7 +59,7 @@ async function getRecommendation(preferences, products) {
     const responseText = result.response.text().replace(/\`\`\`json|\`\`\`/gi,'')
     // console.log(responseText, "<<<");
     const recommend = JSON.parse(responseText)
-    console.log(recommend);
+    // console.log(recommend);
     return recommend;
   } catch (error) {
     console.error("Error generating AI response:", error);

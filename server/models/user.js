@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Recommendation, { foreignKey: "userId" });
       User.hasMany(models.Cart, {foreignKey: "userId"})
     }
   }
@@ -21,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       brand: DataTypes.STRING,
       type: DataTypes.STRING,
-      price_range: DataTypes.JSON,
+      price_range: {
+        type: DataTypes.JSON,
+        defaultValue: ""
+      } 
     },
     {
       sequelize,
@@ -29,11 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate(user) {
           user.password = hashPassword(user.password); 
-        },
-        beforeUpdate: (user) => {
-          if (user.password) {
-            user.password = hashPassword(user.password); 
-          }
         },
       },
     }

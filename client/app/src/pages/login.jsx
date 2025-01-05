@@ -72,7 +72,7 @@ export default function Login() {
     // Handle the OAuth response after GitHub redirect
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
-    console.log("Authorization code from GitHub: ", code);
+    // console.log("Authorization code from GitHub: ", code);
     if (code) {
       const getGitHubToken = async () => {
         try {

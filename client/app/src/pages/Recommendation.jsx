@@ -1,95 +1,163 @@
 import { NavLink } from "react-router";
 import Navbar from "../components/Navbar";
+import { p2Api } from "../helpers/http-client";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import formatterRp from "../helpers/FormatRp";
 
 export default function Recommendation() {
+  const [recommend, setRecommend] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showBackButton, setShowBackButton] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const accessToken = localStorage.getItem("access_token");
+
+  const fetchRecommend = async () => {
+    setLoading(true);
+    try {
+      const response = await p2Api.get("/products/recommendation", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setRecommend(response.data);
+      setShowBackButton(true);
+    } catch (error) {
+      console.error("Error fetching recommend:", error);
+      // console.log(errorMessage);
+    }
+    setLoading(false); // Menghentikan loading spinner setelah selesai
+  };
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await p2Api.get("/cart", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log("tes isi:",response.data);
+      setCartItems(response.data); // Menyimpan cart items
+    } catch (error) {
+      console.error("Error fetching cart items", error);
+    }
+  };
+
+  const handleAddToCart = async (productId) => {
+    setLoading(true);
+    try {
+      const response = await p2Api.post(
+        "/cart",
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response.data);
+      await fetchCartItems(); // Refresh seluruh data keranjang
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+    setLoading(false);
+  };
+
+  const isProductInCart = (productId) => {
+    try {
+      return cartItems.some((item) => {
+        // console.log("Item in cart:", item);
+        return item.productId === productId;
+      });
+    } catch (error) {
+      console.error("cartItems is not iterable or invalid:", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    fetchRecommend();
+    fetchCartItems();
+  }, []);
   return (
     <>
       {/* Navbar */}
-      <Navbar isRecommendationPage={true}/>
+      <Navbar isRecommendationPage={true} />
       {/* Recommendation Section */}
       <div className="px-10 py-6">
         <h2 className="text-3xl font-semibold text-gray-800 mb-4">
           Recommendation with AI
         </h2>
+  
+        {loading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="animate-spin h-10 w-10 border-4 border-sky-300 border-t-transparent rounded-full"></div>
+          </div>
+        )}
+  
+        {/* Product Cards or No Products Found */}
         {/* Card List */}
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-          {/* Product Card */}
-          <div className="bg-white shadow-md rounded-md overflow-hidden flex flex-col p-2">
-          <img
-            src="https://www.tomleemusic.ca/media/catalog/product/cache/7b59eeedc8a9391b10c489498e31e772/s/t/strat_mp_dark.jpg"
-            alt="Product Image"
-            className="w-full h-52 object-fill rounded-md"
-          />
-          <div className="px-4 py-3 flex flex-col flex-grow">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Fender American Professional II Stratocaster
-            </h2>
-            <p className="text-sm font-semibold text-gray-600">Fender</p>
-            <p className="text-sm text-gray-600">Electric</p>
-            <p className="text-lg font-bold text-gray-800">Rp22.000.000</p>
-            <p className="text-sm text-gray-600">
-              A versatile electric guitar with top-tier craftsmanship and tone
-            </p>
+        {recommend.length > 0 ? (
+          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-10">
+            {recommend.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white shadow-md rounded-md overflow-hidden flex flex-col p-2"
+              >
+                <img
+                  src={product.imgUrl}
+                  alt={product.name}
+                  className="w-full h-52 object-fill rounded-md"
+                />
+                <div className="px-4 py-3 flex flex-col flex-grow">
+                  <h2 className="text-lg font-semibold text-gray-800 h-7 overflow-y-auto">
+                    {product.name}
+                  </h2>
+                  <p className="text-sm font-semibold text-gray-600">
+                    {product.brand}
+                  </p>
+                  <p className="text-sm text-gray-600">{product.type}</p>
+                  <p className="text-lg font-bold text-gray-800">
+                    {formatterRp.format(product.price)}
+                  </p>
+                  <p className="text-sm text-gray-600">{product.description}</p>
+                </div>
+                <button
+                  onClick={() => handleAddToCart(product.id)}
+                  disabled={isProductInCart(product.id)}
+                  className={`w-full mt-auto py-2 rounded-md ${
+                    isProductInCart(product.id)
+                      ? "bg-sky-300 text-white"
+                      : "bg-sky-700 text-white hover:bg-sky-600"
+                  }`}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))}
           </div>
-          <button className="w-full bg-sky-700 text-white mt-auto py-2 rounded-md hover:bg-sky-600">
-            Add to Cart
-          </button>
-        </div>
-
-        <div className="bg-white shadow-md rounded-md overflow-hidden flex flex-col p-2">
-          <img
-            src="https://hariharimusik.id/wp-content/uploads/2020/04/slick-silver-affinity1.jpg"
-            alt="Product Image"
-            className="w-full h-52 object-fill rounded-md"
-          />
-          <div className="px-4 py-3 flex flex-col flex-grow">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Squier Affinity Series Stratocaster
-            </h2>
-            <p className="text-sm font-semibold text-gray-600">Squier</p>
-            <p className="text-sm text-gray-600">Electric</p>
-            <p className="text-lg font-bold text-gray-800">Rp4.500.000</p>
-            <p className="text-sm text-gray-600">
-              A great entry-level guitar with classic Stratocaster styling
-            </p>
-          </div>
-          <button className="w-full bg-sky-700 text-white mt-auto py-2 rounded-md hover:bg-sky-600">
-            Add to Cart
-          </button>
-        </div>
-
-        <div className="bg-white shadow-md rounded-md overflow-hidden flex flex-col p-2">
-          <img
-            src="https://skymusic.com.au/cdn/shop/files/se-cu2408-tu_2_1200x.jpg?v=1697158015"
-            alt="Product Image"
-            className="w-full h-52 object-fill rounded-md"
-          />
-          <div className="px-4 py-3 flex flex-col flex-grow">
-            <h2 className="text-lg font-semibold text-gray-800">
-              PRS SE Custom 24 
-            </h2>
-            <p className="text-sm font-semibold text-gray-600">PRS Guitars</p>
-            <p className="text-sm text-gray-600">Electric</p>
-            <p className="text-lg font-bold text-gray-800">Rp17.500.000</p>
-            <p className="text-sm text-gray-600">
-              A versatile guitar with a beautiful finish and wide tonal range
-            </p>
-          </div>
-          <button className="w-full bg-sky-700 text-white mt-auto py-2 rounded-md hover:bg-sky-600">
-            Add to Cart
-          </button>
-        </div>
-          
-         
-          {/* Add more cards as necessary */}
-        </div>
+        ) : (
+          !loading && (
+            <div className="text-center py-[166px] text-xl font-semibold text-gray-600">
+              Product not found
+            </div>
+          )
+        )}
+  
         {/* Back Button */}
-        <div className="flex justify-start ml-6 mt-8">
-          <NavLink to="/" className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600">
-            Back to Home
-          </NavLink>
-        </div>
+        {showBackButton && (
+          <div className="flex justify-start ml-6 mt-5">
+            <NavLink
+              to="/"
+              className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600"
+            >
+              Back to Home
+            </NavLink>
+          </div>
+        )}
       </div>
     </>
   );
+  
 }

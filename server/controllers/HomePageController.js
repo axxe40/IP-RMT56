@@ -46,7 +46,7 @@ class HomePageController {
   
       res.status(200).json(response);
     } catch (error) {
-      console.log("ada apa", error);
+      // console.log("ada apa", error);
       next(error);
     }
   }
