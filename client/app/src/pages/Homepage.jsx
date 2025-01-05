@@ -35,9 +35,7 @@ export default function Homepage() {
     setLoading(false); // Menghentikan loading spinner setelah selesai
   };
   
-  useEffect(() => {
-    fetchProducts();
-  }, [searchQuery, brandFilter, typeFilter]); 
+ 
 
   const fetchCartItems = async () => {
     try {
@@ -55,8 +53,8 @@ export default function Homepage() {
 
   useEffect(() => {
     fetchProducts();
-    fetchCartItems(); // Fetch cart items saat halaman di-render
-  }, [searchQuery, brandFilter, typeFilter]); // Dependensi yang ada
+    fetchCartItems(); 
+  }, [searchQuery, brandFilter, typeFilter]); 
 
   const handleAddToCart = async (productId) => {
     setLoading(true);
@@ -165,7 +163,7 @@ export default function Homepage() {
               className="w-full h-52 object-fill rounded-md"
             />
             <div className="px-4 py-3 flex flex-col flex-grow">
-              <h2 className="text-lg font-semibold text-gray-800 h-8 overflow-y-auto">{product.name}</h2>
+              <h2 className="text-lg font-semibold text-gray-800 h-7 overflow-y-auto">{product.name}</h2>
               <p className="text-sm font-semibold text-gray-600">{product.brand}</p>
               <p className="text-sm text-gray-600">{product.type}</p>
               <p className="text-lg font-bold text-gray-800">{formatterRp.format(product.price)}</p>

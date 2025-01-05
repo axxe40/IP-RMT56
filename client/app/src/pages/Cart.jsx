@@ -53,7 +53,7 @@ export default function Cart() {
     setLoading(true);
     try {
       // Kirim permintaan untuk memperbarui kuantitas
-      const response = await p2Api.put(
+      await p2Api.put(
         `/cart/${itemId}`,
         { quantity: newQuantity },
         {
@@ -115,7 +115,7 @@ export default function Cart() {
                   className="w-full h-52 object-fill rounded-md"
                 />
                 <div className="p-3">
-                  <h2 className="text-lg font-semibold text-gray-800 h-8 overflow-y-auto">
+                  <h2 className="text-lg font-semibold text-gray-800 h-7 overflow-y-auto">
                     {cartItem.Product.name}
                   </h2>
                   <p className="text-sm font-medium text-gray-600">
@@ -165,7 +165,7 @@ export default function Cart() {
           )}
         </div>
 
-        <div className="flex justify-start mt-6 ml-3">
+        <div className="flex justify-start mt-3 ml-6">
           <NavLink
             to="/"
             className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600"
