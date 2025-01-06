@@ -49,7 +49,7 @@ export default function Cart() {
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return; // Jangan izinkan quantity kurang dari 1
-  
+
     setLoading(true);
     try {
       // Kirim permintaan untuk memperbarui kuantitas
@@ -62,17 +62,17 @@ export default function Cart() {
           },
         }
       );
-  
+
       // Update item di state dengan harga per unit tetap
       const updatedCartItems = cartItems.map((item) =>
         item.id === itemId
-      ? {
-          ...item,
-          quantity: newQuantity, // Hanya update kuantitas
-        }
-      : item
+          ? {
+              ...item,
+              quantity: newQuantity, // Hanya update kuantitas
+            }
+          : item
       );
-  
+
       setCartItems(updatedCartItems); // Perbarui cartItems di state
     } catch (error) {
       console.error("Error updating quantity", error);
@@ -125,7 +125,9 @@ export default function Cart() {
                     {cartItem.Product.type}
                   </p>
                   <p className="text-lg font-semibold text-gray-800 ">
-                    {formatterRp.format(cartItem.Product.price * cartItem.quantity)}
+                    {formatterRp.format(
+                      cartItem.Product.price * cartItem.quantity
+                    )}
                   </p>
                   <div className="flex items-center justify-between mt-4">
                     <button
@@ -140,10 +142,11 @@ export default function Cart() {
                       {cartItem.quantity}
                     </span>
                     <button
-                       onClick={() =>
+                      onClick={() =>
                         handleUpdateQuantity(cartItem.id, cartItem.quantity + 1)
                       }
-                      className="bg-green-500 text-black py-2 px-6 rounded-md hover:bg-green-600 focus:outline-none">
+                      className="bg-green-500 text-black py-2 px-6 rounded-md hover:bg-green-600 focus:outline-none"
+                    >
                       +
                     </button>
                   </div>
@@ -157,22 +160,26 @@ export default function Cart() {
               </div>
             ))
           ) : (
-            <div className="flex justify-center items-center h-80 col-span-4">
-              <span className="text-center py-20 text-xl font-semibold text-gray-600">
-                Your cart is empty
-              </span>
-            </div>
+            (!loading &&  (
+              <div className="flex justify-center items-center h-80 col-span-4">
+                <span className="text-center py-20 text-xl font-semibold text-gray-600">
+                  Your cart is empty
+                </span>
+              </div>
+            ))
           )}
         </div>
 
-        <div className="flex justify-start mt-3 ml-6">
-          <NavLink
-            to="/"
-            className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600"
-          >
-            Back to Home
-          </NavLink>
-        </div>
+        {!loading && (
+          <div className="flex justify-start mt-3 ml-6">
+            <NavLink
+              to="/"
+              className="bg-sky-700 text-white px-6 py-3 rounded-md hover:bg-sky-600"
+            >
+              Back to Home
+            </NavLink>
+          </div>
+        )}
       </div>
     </>
   );
