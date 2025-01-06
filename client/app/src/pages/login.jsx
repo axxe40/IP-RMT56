@@ -23,7 +23,7 @@ export default function Login() {
 
       setTimeout(() => {
         navigate("/");
-      }, 400);
+      }, 300);
     } catch (error) {
       console.log("handleLogin error:", error);
       const errorMessage = error.response.data.message
