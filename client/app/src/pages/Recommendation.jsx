@@ -24,7 +24,7 @@ export default function Recommendation() {
       console.error("Error fetching recommend:", error);
       // console.log(errorMessage);
     }
-    setLoading(false); // Menghentikan loading spinner setelah selesai
+    setLoading(false); 
   };
 
   const fetchCartItems = async () => {
@@ -69,7 +69,6 @@ export default function Recommendation() {
         return item.productId === productId;
       });
     } catch (error) {
-      console.error("cartItems is not iterable or invalid:", error);
       return false;
     }
   };
