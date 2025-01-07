@@ -7,9 +7,12 @@ import Recommendation from "./pages/Recommendation";
 import Register from "./pages/register";
 import { BrowserRouter, Route, Routes } from "react-router";
 import AuthLayout from "./layouts/AuthLayout";
+import {Provider} from "react-redux"
+import { store } from "./store";
 
 function App() {
   return (
+    <Provider store={store}>
     <BrowserRouter>
       <ToastContainer />
       <Routes>
@@ -19,13 +22,13 @@ function App() {
           <Route path="/recommend" element={<Recommendation />} />
         </Route>
 
-        
           <Route element={<UnAuthLayout />}>
         <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />} />
           </Route>
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+      </Provider>
   );
 }
 

@@ -8,7 +8,6 @@ import formatterRp from "../helpers/FormatRp";
 export default function Recommendation() {
   const [recommend, setRecommend] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showBackButton, setShowBackButton] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const accessToken = localStorage.getItem("access_token");
 
@@ -21,12 +20,11 @@ export default function Recommendation() {
         },
       });
       setRecommend(response.data);
-      setShowBackButton(true);
     } catch (error) {
       console.error("Error fetching recommend:", error);
       // console.log(errorMessage);
     }
-    setLoading(false); // Menghentikan loading spinner setelah selesai
+    setLoading(false); 
   };
 
   const fetchCartItems = async () => {
@@ -71,7 +69,6 @@ export default function Recommendation() {
         return item.productId === productId;
       });
     } catch (error) {
-      console.error("cartItems is not iterable or invalid:", error);
       return false;
     }
   };
@@ -138,15 +135,14 @@ export default function Recommendation() {
             ))}
           </div>
         ) : (
-          !loading && (
+          (!loading && (
             <div className="text-center py-[166px] text-xl font-semibold text-gray-600">
               Product not found
             </div>
-          )
+          ))
         )}
   
-        {/* Back Button */}
-        {showBackButton && (
+        {!loading && (
           <div className="flex justify-start ml-6 mt-5">
             <NavLink
               to="/"
